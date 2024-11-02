@@ -20,11 +20,13 @@ jobs:
 
       - name: Set up Git user
         run: |
+          set -x
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Generate Changelog from Commit Messages
         run: |
+          set -x
           git log -n 5 --pretty=format:"- %s (%ci)" --abbrev-commit > recent_changelog.txt
           echo "### Latest Changes" > temp_readme.txt
           cat recent_changelog.txt >> temp_readme.txt
@@ -32,11 +34,13 @@ jobs:
           cat README.md >> temp_readme.txt
           mv temp_readme.txt README.md
 
-      - name: Create a new branch and push changes
+      - name: Create a new branch, pull, and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -x
           git checkout -b update-readme-changelog
           git add README.md
-          git commit -m "chore: Update README with latest changelog"
+          git commit -m "chore: Update README with latest changelog" || echo "Nothing to commit"
+          git pull origin main --rebase  # Pull latest changes from the main branch with rebase
           git push origin update-readme-changelog

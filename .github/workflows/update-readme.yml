@@ -34,7 +34,7 @@ jobs:
           cat README.md >> temp_readme.txt
           mv temp_readme.txt README.md
 
-      - name: Create a new branch, pull, and push changes
+      - name: Create a new branch, pull, and force push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -43,4 +43,4 @@ jobs:
           git add README.md
           git commit -m "chore: Update README with latest changelog" || echo "Nothing to commit"
           git pull origin main --rebase  # Pull latest changes from the main branch with rebase
-          git push origin update-readme-changelog
+          git push origin update-readme-changelog --force  # Force push changes

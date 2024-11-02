@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repository content
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -39,8 +39,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -x
-          git checkout -b update-readme-changelog
+          git checkout main
           git add README.md
           git commit -m "chore: Update README with latest changelog" || echo "Nothing to commit"
-          git pull origin main --rebase  # Pull latest changes from the main branch with rebase
-          git push origin update-readme-changelog --force  # Force push changes
+          git pull origin main --rebase || git rebase --abort # Pull latest changes from the main branch with rebase
+          git push origin main # Push changes to main 

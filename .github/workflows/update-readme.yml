@@ -30,19 +30,17 @@ jobs:
           # Generate latest commit message for new "Latest Changes"
           git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit > recent_changelog.txt
     
-          # Extract existing past commits, excluding "Latest Changes"
-          grep -A1000 "### Past Commits" README.md | grep -v "### Latest Changes" > past_commits.txt
-
-          # Prepare the new README structure
+          # Read the existing README file and split it for update
           echo "### Latest Changes" > temp_readme.txt
           cat recent_changelog.txt >> temp_readme.txt
           echo "\n" >> temp_readme.txt
+          
           echo "### Past Commits" >> temp_readme.txt
-          cat past_commits.txt >> temp_readme.txt
+          git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit >> temp_readme.txt
           echo "\n" >> temp_readme.txt
 
-          # Add the rest of the content (excluding duplicate sections)
-          grep -B1000 "### Latest Changes" README.md >> temp_readme.txt
+          # Append the rest of the README content, excluding previous changelog info
+          awk '/^### Technologies Used/ {print; exit}' README.md >> temp_readme.txt
 
           # Replace README.md with updated version
           mv temp_readme.txt README.md

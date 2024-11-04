@@ -15,12 +15,9 @@ jobs:
     steps:
       - name: Checkout repository content
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Git user
         run: |
-          set -x
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -28,43 +25,43 @@ jobs:
         run: |
           set -x
 
-          # Create a new README file with the desired order and updated changelog
-          {
-            echo "# Resume Project"
-            echo ""
-            echo "A Spring Boot application to manage resume data, including work experience, education, and contact information."
-            echo ""
-            echo "## Technologies Used"
-            echo "- Java (version 23)"
-            echo "- Spring Boot"
-            echo "- Lombok"
-            echo "- Maven"
-            echo "- JPA (Java Persistence API)"
-            echo ""
-            echo "## How to Run"
-            echo "1. Clone the repository."
-            echo "2. Navigate to the project directory."
-            echo "3. Run the following command to start the application:"
-            echo "\`\`\`"
-            echo "mvn spring-boot:run"
-            echo "\`\`\`"
-            echo ""
-            echo "## Changelog"
-            echo "### Latest Changes"
-            git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit
-            echo ""
-            echo "### Past Commits"
-            git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit
-            echo ""
-          } > README.md
+          # Capture the latest commit
+          git log -1 --pretty=format:"- %s (%ci)" --abbrev-commit > latest_changes.txt
+
+          # Capture the past commits (excluding the latest one)
+          git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit > past_commits.txt
+
+          # Create a new README
+          echo "# Resume Project" > README.md
+          echo "" >> README.md
+          echo "A Spring Boot application to manage resume data, including work experience, education, and contact information." >> README.md
+          echo "" >> README.md
+          echo "## Technologies Used" >> README.md
+          echo "- Java (version 23)" >> README.md
+          echo "- Spring Boot" >> README.md
+          echo "- Lombok" >> README.md
+          echo "- Maven" >> README.md
+          echo "- JPA (Java Persistence API)" >> README.md
+          echo "" >> README.md
+          echo "## How to Run" >> README.md
+          echo "1. Clone the repository." >> README.md
+          echo "2. Navigate to the project directory." >> README.md
+          echo "3. Run the following command to start the application:" >> README.md
+          echo '```sh' >> README.md
+          echo "mvn spring-boot:run" >> README.md
+          echo '```' >> README.md
+          echo "" >> README.md
+          echo "## Changelog" >> README.md
+          echo "### Latest Changes" >> README.md
+          cat latest_changes.txt >> README.md
+          echo "" >> README.md
+          echo "### Past Commits" >> README.md
+          cat past_commits.txt >> README.md
 
       - name: Commit and Push Changes
+        run: |
+          git add README.md
+          git commit -m "chore: Update README with latest changelog"
+          git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -x
-          git checkout -b update-readme-changelog
-          git add README.md
-          git commit -m "chore: Update README with latest changelog" || echo "Nothing to commit"
-          git pull origin main --rebase  # Pull latest changes from the main branch with rebase
-          git push origin update-readme-changelog --force  # Force push changes

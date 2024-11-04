@@ -15,10 +15,12 @@ import my.resume.Spring.service.WorkExperienceUtility;
 @AllArgsConstructor
 @Entity
 public class ContactInfo {
-//list of work experience objects. Service level list of work exp objects
+
     @Id
     @GeneratedValue 
     private Long id;
+    private String firstName;
+    private String lastName;
     private String cellPhone;
     private String email;
     private String gitHubRepo;

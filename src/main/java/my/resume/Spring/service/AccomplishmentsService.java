@@ -1,6 +1,5 @@
 package my.resume.Spring.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,16 +21,11 @@ public class AccomplishmentsService {
      */
 
     public List<Accomplishments> getAll(){
-        List<Accomplishments> accomplishmentsList = repository.findAll();
-
-        if(!accomplishmentsList.isEmpty()){
-            return accomplishmentsList;
-        } 
-        else {
-            return new ArrayList<>();
-        }
+        
+        return repository.findAll();
+   
     }
-    //kind of like a getter in that it "gets" Accomp class by looking at the @Id
+    //kind of like a getter in that it "gets" Accomplishments class by looking at the @Id
     public Optional<Accomplishments> getById(Long id){
         return repository.findById(id);
     }
@@ -39,27 +33,16 @@ public class AccomplishmentsService {
     //CRUD Method to create a new accomplishment obj or update a current one. It check if id is present to either update it or create a new one to update later
     public Accomplishments createOrUpdate(Accomplishments accompObject){
         Optional<Accomplishments> accompFind = repository.findById(accompObject.getId());
-            if(accompFind.isPresent()){
-                Accomplishments newAccomplishments = accompFind.get();
-                newAccomplishments.setOverallAccomplishments(accompObject.getOverallAccomplishments());
+            accompFind.ifPresent(existingAccomplishments -> {
+                
+                existingAccomplishments.setOverallAccomplishments(accompObject.getOverallAccomplishments());
+                repository.save(existingAccomplishments);
+    
+            }); 
 
-                newAccomplishments = repository.save(newAccomplishments);
-
-                return newAccomplishments;
-            } else {
-                return repository.save(accompObject);
-            }
+            return accompFind.orElseGet(() -> repository.save(accompObject));
 
     }
-
-
-
-
-
-
-
-
-
 
     public void deleteById(Long id){
         repository.deleteById(id);

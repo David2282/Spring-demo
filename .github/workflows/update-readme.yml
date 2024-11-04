@@ -28,12 +28,13 @@ jobs:
         run: |
           set -x
 
-          # Get the latest change and save to a temp file
+          # Get the latest change and save it to a temp file
           git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit > latest_changes.txt
 
-          # Create the new README with the desired order
+          # Create a new README with the desired order
           {
             echo "# Resume Project"
+            echo ""
             echo "A Spring Boot application to manage resume data, including work experience, education, and contact information."
             echo ""
             echo "## Technologies Used"
@@ -58,13 +59,7 @@ jobs:
             echo "### Past Commits"
             git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit
             echo ""
-          } > temp_readme.txt
-
-          # Append the remaining content (if any)
-          tail -n +$(awk '/^## Technologies Used/{print NR+1; exit}' README.md) README.md >> temp_readme.txt
-
-          # Replace the original README
-          mv temp_readme.txt README.md
+          } > README.md
 
       - name: Commit and Push Changes
         env:

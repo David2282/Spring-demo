@@ -1,5 +1,4 @@
 # Resume Project
-
 A Spring Boot application to manage resume data, including work experience, education, and contact information.
 
 ## Technologies Used
@@ -19,5 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- test10 (2024-11-04 10:10:22 -0600)
+- Update update-readme.yml (2024-11-04 10:22:09 -0600)
 ### Past Commits
+- test10 (2024-11-04 10:10:22 -0600)
+

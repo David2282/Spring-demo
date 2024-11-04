@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout repository content
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -24,58 +24,55 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-     - name: Generate Changelog from Commit Messages
-       run: |
+      - name: Generate Changelog from Commit Messages
+        run: |
           set -x
 
-    # Get the latest change and save to a temp file
-    git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit > latest_changes.txt
+          # Get the latest change and save to a temp file
+          git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit > latest_changes.txt
 
-    # Create the new README with the desired order
-    echo "# Resume Project" > temp_readme.txt
-    echo "A Spring Boot application to manage resume data, including work experience, education, and contact information." >> temp_readme.txt
-    echo "" >> temp_readme.txt
+          # Create the new README with the desired order
+          {
+            echo "# Resume Project"
+            echo "A Spring Boot application to manage resume data, including work experience, education, and contact information."
+            echo ""
+            echo "## Technologies Used"
+            echo "- Java (version 23)"
+            echo "- Spring Boot"
+            echo "- Lombok"
+            echo "- Maven"
+            echo "- JPA (Java Persistence API)"
+            echo ""
+            echo "## How to Run"
+            echo "1. Clone the repository."
+            echo "2. Navigate to the project directory."
+            echo "3. Run the following command to start the application:"
+            echo "\`\`\`"
+            echo "mvn spring-boot:run"
+            echo "\`\`\`"
+            echo ""
+            echo "## Changelog"
+            echo "### Latest Changes"
+            cat latest_changes.txt
+            echo ""
+            echo "### Past Commits"
+            git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit
+            echo ""
+          } > temp_readme.txt
 
-    echo "## Technologies Used" >> temp_readme.txt
-    echo "- Java (version 23)" >> temp_readme.txt
-    echo "- Spring Boot" >> temp_readme.txt
-    echo "- Lombok" >> temp_readme.txt
-    echo "- Maven" >> temp_readme.txt
-    echo "- JPA (Java Persistence API)" >> temp_readme.txt
-    echo "" >> temp_readme.txt
+          # Append the remaining content (if any)
+          tail -n +$(awk '/^## Technologies Used/{print NR+1; exit}' README.md) README.md >> temp_readme.txt
 
-    echo "## How to Run" >> temp_readme.txt
-    echo "1. Clone the repository." >> temp_readme.txt
-    echo "2. Navigate to the project directory." >> temp_readme.txt
-    echo "3. Run the following command to start the application:" >> temp_readme.txt
-    echo "\`\`\`" >> temp_readme.txt
-    echo "mvn spring-boot:run" >> temp_readme.txt
-    echo "\`\`\`" >> temp_readme.txt
-    echo "" >> temp_readme.txt
+          # Replace the original README
+          mv temp_readme.txt README.md
 
-    echo "## Changelog" >> temp_readme.txt
-    echo "### Latest Changes" >> temp_readme.txt
-    cat latest_changes.txt >> temp_readme.txt
-    echo "" >> temp_readme.txt
-
-    echo "### Past Commits" >> temp_readme.txt
-    git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit >> temp_readme.txt
-    echo "" >> temp_readme.txt
-
-    # Append the rest of the README content (if any)
-    awk '/^## Technologies Used/ {flag=1; next} flag' README.md >> temp_readme.txt
-
-    # Replace the original README
-    mv temp_readme.txt README.md
-
-
-      - name: Create a new branch, pull, and force push changes
+      - name: Commit and Push Changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -x
-          git checkout main
+          git checkout -b update-readme-changelog
           git add README.md
           git commit -m "chore: Update README with latest changelog" || echo "Nothing to commit"
-          git pull origin main --rebase || git rebase --abort # Pull latest changes from the main branch with rebase
-          git push origin main # Push changes to main 
+          git pull origin main --rebase  # Pull latest changes from the main branch with rebase
+          git push origin update-readme-changelog --force  # Force push changes

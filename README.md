@@ -1,7 +1,3 @@
-## Latest Changes
-- Update README.md (2024-11-04 10:51:49 -0600)
-## Past Commits
-## Past Commits
 # Resume Project
 A Spring Boot application to manage resume data, including work experience, education, and contact information.
 
@@ -22,9 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- test12 (2024-11-04 10:45:28 -0600)
+- Update update-readme.yml (2024-11-04 10:52:42 -0600)
 ### Past Commits
-- Update update-readme.yml (2024-11-04 10:43:23 -0600)
-- test11 (2024-11-04 10:25:22 -0600)
-- Update update-readme.yml (2024-11-04 10:22:09 -0600)
+- test12 (2024-11-04 10:45:28 -0600)
 

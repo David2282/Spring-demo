@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository content
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Git user
         run: |
@@ -24,44 +26,55 @@ jobs:
       - name: Generate Changelog from Commit Messages
         run: |
           set -x
-
-          # Capture the latest commit
+          
+          # Capture the last commit message for Latest Changes
           git log -1 --pretty=format:"- %s (%ci)" --abbrev-commit > latest_changes.txt
+          
+          # Extract and store the content of the previous Latest Changes
+          awk '/### Latest Changes/{flag=1; next} /### Past Commits/{flag=0} flag' README.md > past_latest_changes.txt
+          
+          # Build new README content
+          echo "# Resume Project" > new_readme.txt
+          echo "A Spring Boot application to manage resume data, including work experience, education, and contact information." >> new_readme.txt
+          echo "" >> new_readme.txt
 
-          # Capture the past commits (excluding the latest one)
-          git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit > past_commits.txt
+          echo "## Technologies Used" >> new_readme.txt
+          echo "- Java (version 23)" >> new_readme.txt
+          echo "- Spring Boot" >> new_readme.txt
+          echo "- Lombok" >> new_readme.txt
+          echo "- Maven" >> new_readme.txt
+          echo "- JPA (Java Persistence API)" >> new_readme.txt
+          echo "" >> new_readme.txt
 
-          # Create a new README
-          echo "# Resume Project" > README.md
-          echo "" >> README.md
-          echo "A Spring Boot application to manage resume data, including work experience, education, and contact information." >> README.md
-          echo "" >> README.md
-          echo "## Technologies Used" >> README.md
-          echo "- Java (version 23)" >> README.md
-          echo "- Spring Boot" >> README.md
-          echo "- Lombok" >> README.md
-          echo "- Maven" >> README.md
-          echo "- JPA (Java Persistence API)" >> README.md
-          echo "" >> README.md
-          echo "## How to Run" >> README.md
-          echo "1. Clone the repository." >> README.md
-          echo "2. Navigate to the project directory." >> README.md
-          echo "3. Run the following command to start the application:" >> README.md
-          echo '```sh' >> README.md
-          echo "mvn spring-boot:run" >> README.md
-          echo '```' >> README.md
-          echo "" >> README.md
-          echo "## Changelog" >> README.md
-          echo "### Latest Changes" >> README.md
-          cat latest_changes.txt >> README.md
-          echo "" >> README.md
-          echo "### Past Commits" >> README.md
-          cat past_commits.txt >> README.md
+          echo "## How to Run" >> new_readme.txt
+          echo "1. Clone the repository." >> new_readme.txt
+          echo "2. Navigate to the project directory." >> new_readme.txt
+          echo "3. Run the following command to start the application:" >> new_readme.txt
+          echo "\`\`\`sh" >> new_readme.txt
+          echo "mvn spring-boot:run" >> new_readme.txt
+          echo "\`\`\`" >> new_readme.txt
+          echo "" >> new_readme.txt
+
+          echo "## Changelog" >> new_readme.txt
+          
+          # Append the latest change to the README
+          echo "### Latest Changes" >> new_readme.txt
+          cat latest_changes.txt >> new_readme.txt
+          echo "" >> new_readme.txt
+
+          # Append past commits to the README
+          echo "### Past Commits" >> new_readme.txt
+          cat past_latest_changes.txt >> new_readme.txt
+          git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit >> new_readme.txt
+          echo "" >> new_readme.txt
+
+          # Replace the old README.md with the new one
+          mv new_readme.txt README.md
 
       - name: Commit and Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git add README.md
           git commit -m "chore: Update README with latest changelog"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push origin main

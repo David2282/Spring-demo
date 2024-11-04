@@ -24,26 +24,49 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Generate Changelog from Commit Messages
-        run: |
+     - name: Generate Changelog from Commit Messages
+       run: |
           set -x
-          # Generate latest commit message for new "Latest Changes"
-          git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit > recent_changelog.txt
-    
-          # Read the existing README file and split it for update
-          echo "### Latest Changes" > temp_readme.txt
-          cat recent_changelog.txt >> temp_readme.txt
-          echo "\n" >> temp_readme.txt
-          
-          echo "### Past Commits" >> temp_readme.txt
-          git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit >> temp_readme.txt
-          echo "\n" >> temp_readme.txt
 
-          # Append the rest of the README content, excluding previous changelog info
-          awk '/^### Technologies Used/ {print; exit}' README.md >> temp_readme.txt
+    # Get the latest change and save to a temp file
+    git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit > latest_changes.txt
 
-          # Replace README.md with updated version
-          mv temp_readme.txt README.md
+    # Create the new README with the desired order
+    echo "# Resume Project" > temp_readme.txt
+    echo "A Spring Boot application to manage resume data, including work experience, education, and contact information." >> temp_readme.txt
+    echo "" >> temp_readme.txt
+
+    echo "## Technologies Used" >> temp_readme.txt
+    echo "- Java (version 23)" >> temp_readme.txt
+    echo "- Spring Boot" >> temp_readme.txt
+    echo "- Lombok" >> temp_readme.txt
+    echo "- Maven" >> temp_readme.txt
+    echo "- JPA (Java Persistence API)" >> temp_readme.txt
+    echo "" >> temp_readme.txt
+
+    echo "## How to Run" >> temp_readme.txt
+    echo "1. Clone the repository." >> temp_readme.txt
+    echo "2. Navigate to the project directory." >> temp_readme.txt
+    echo "3. Run the following command to start the application:" >> temp_readme.txt
+    echo "\`\`\`" >> temp_readme.txt
+    echo "mvn spring-boot:run" >> temp_readme.txt
+    echo "\`\`\`" >> temp_readme.txt
+    echo "" >> temp_readme.txt
+
+    echo "## Changelog" >> temp_readme.txt
+    echo "### Latest Changes" >> temp_readme.txt
+    cat latest_changes.txt >> temp_readme.txt
+    echo "" >> temp_readme.txt
+
+    echo "### Past Commits" >> temp_readme.txt
+    git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit >> temp_readme.txt
+    echo "" >> temp_readme.txt
+
+    # Append the rest of the README content (if any)
+    awk '/^## Technologies Used/ {flag=1; next} flag' README.md >> temp_readme.txt
+
+    # Replace the original README
+    mv temp_readme.txt README.md
 
 
       - name: Create a new branch, pull, and force push changes

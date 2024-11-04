@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write  # Explicitly set permissions for the GitHub token
+      contents: write
 
     steps:
       - name: Checkout repository content
@@ -20,61 +20,40 @@ jobs:
 
       - name: Set up Git user
         run: |
+          set -x
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Generate Changelog from Commit Messages
         run: |
           set -x
-          
-          # Capture the last commit message for Latest Changes
+          # Get the latest commit and update "Latest Changes"
           git log -1 --pretty=format:"- %s (%ci)" --abbrev-commit > latest_changes.txt
-          
-          # Extract and store the content of the previous Latest Changes
-          awk '/### Latest Changes/{flag=1; next} /### Past Commits/{flag=0} flag' README.md > past_latest_changes.txt
-          
-          # Build new README content
-          echo "# Resume Project" > new_readme.txt
-          echo "A Spring Boot application to manage resume data, including work experience, education, and contact information." >> new_readme.txt
-          echo "" >> new_readme.txt
 
-          echo "## Technologies Used" >> new_readme.txt
-          echo "- Java (version 23)" >> new_readme.txt
-          echo "- Spring Boot" >> new_readme.txt
-          echo "- Lombok" >> new_readme.txt
-          echo "- Maven" >> new_readme.txt
-          echo "- JPA (Java Persistence API)" >> new_readme.txt
-          echo "" >> new_readme.txt
+          # Prepare the updated README content
+          echo "## Latest Changes" > temp_readme.txt
+          cat latest_changes.txt >> temp_readme.txt
+          echo "" >> temp_readme.txt
 
-          echo "## How to Run" >> new_readme.txt
-          echo "1. Clone the repository." >> new_readme.txt
-          echo "2. Navigate to the project directory." >> new_readme.txt
-          echo "3. Run the following command to start the application:" >> new_readme.txt
-          echo "\`\`\`sh" >> new_readme.txt
-          echo "mvn spring-boot:run" >> new_readme.txt
-          echo "\`\`\`" >> new_readme.txt
-          echo "" >> new_readme.txt
+          echo "## Past Commits" >> temp_readme.txt
+          if [ -f past_commits.txt ]; then
+            # Append new past commits while retaining the previous history
+            cat past_commits.txt >> temp_readme.txt
+          fi
 
-          echo "## Changelog" >> new_readme.txt
-          
-          # Append the latest change to the README
-          echo "### Latest Changes" >> new_readme.txt
-          cat latest_changes.txt >> new_readme.txt
-          echo "" >> new_readme.txt
+          # Update the README
+          cat README.md >> temp_readme.txt
+          mv temp_readme.txt README.md
 
-          # Append past commits to the README
-          echo "### Past Commits" >> new_readme.txt
-          cat past_latest_changes.txt >> new_readme.txt
-          git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit >> new_readme.txt
-          echo "" >> new_readme.txt
-
-          # Replace the old README.md with the new one
-          mv new_readme.txt README.md
+          # Update past commits log for the next run
+          echo "## Past Commits" > past_commits.txt
+          git log --skip=1 --pretty=format:"- %s (%ci)" --abbrev-commit >> past_commits.txt
 
       - name: Commit and Push Changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git add README.md
+          set -x
+          git add README.md past_commits.txt
           git commit -m "chore: Update README with latest changelog"
           git push origin main

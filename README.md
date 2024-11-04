@@ -1,3 +1,7 @@
+## Latest Changes
+- Update README.md (2024-11-04 10:51:49 -0600)
+## Past Commits
+## Past Commits
 # Resume Project
 A Spring Boot application to manage resume data, including work experience, education, and contact information.
 

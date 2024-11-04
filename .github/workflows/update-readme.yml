@@ -28,10 +28,7 @@ jobs:
         run: |
           set -x
 
-          # Get the latest change and save it to a temp file
-          git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit > latest_changes.txt
-
-          # Create a new README with the desired order
+          # Create a new README file with the desired order and updated changelog
           {
             echo "# Resume Project"
             echo ""
@@ -54,7 +51,7 @@ jobs:
             echo ""
             echo "## Changelog"
             echo "### Latest Changes"
-            cat latest_changes.txt
+            git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit
             echo ""
             echo "### Past Commits"
             git log --skip=1 -n 10 --pretty=format:"- %s (%ci)" --abbrev-commit

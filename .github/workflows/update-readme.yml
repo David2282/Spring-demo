@@ -27,20 +27,26 @@ jobs:
       - name: Generate Changelog from Commit Messages
         run: |
           set -x
-          # Generate latest commit messages for the new Latest Changes
+          # Generate latest commit message for new "Latest Changes"
           git log -n 1 --pretty=format:"- %s (%ci)" --abbrev-commit > recent_changelog.txt
+    
+          # Extract existing past commits, excluding "Latest Changes"
+          grep -A1000 "### Past Commits" README.md | grep -v "### Latest Changes" > past_commits.txt
 
-          # Append current Latest Changes to Past Commits
-          echo "\n### Past Commits" > past_commits.txt
-          grep -A1000 "### Latest Changes" README.md | grep -v "### Latest Changes" >> past_commits.txt
-
-          # Update the README with the new structure
+          # Prepare the new README structure
           echo "### Latest Changes" > temp_readme.txt
           cat recent_changelog.txt >> temp_readme.txt
           echo "\n" >> temp_readme.txt
+          echo "### Past Commits" >> temp_readme.txt
           cat past_commits.txt >> temp_readme.txt
-          cat README.md >> temp_readme.txt
+          echo "\n" >> temp_readme.txt
+
+          # Add the rest of the content (excluding duplicate sections)
+          grep -B1000 "### Latest Changes" README.md >> temp_readme.txt
+
+          # Replace README.md with updated version
           mv temp_readme.txt README.md
+
 
       - name: Create a new branch, pull, and force push changes
         env:

@@ -18,7 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- Create: service classes matching model classes (2024-11-04 15:50:10 -0600)
+- Create and Refactor: new exception package and atomic refs for service classes (2024-11-05 17:10:00 -0600)
 ### Past Commits
-- test13 (2024-11-04 10:55:10 -0600)
+- Create: service classes matching model classes (2024-11-04 15:50:10 -0600)
 

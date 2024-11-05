@@ -2,6 +2,7 @@ package my.resume.Spring.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,15 +23,17 @@ public class SkillsService {
     }
     
     public Skills createOrUpdate(Skills skillsObject){
+        AtomicReference<Skills> result = new AtomicReference<>();
         Optional<Skills> skillsFind = repository.findById(skillsObject.getId());
-        skillsFind.ifPresent(existingSkills -> {
+        skillsFind.ifPresentOrElse(existingSkills -> {
             existingSkills.setSkillName(skillsObject.getSkillName());
             existingSkills.setYearsOfUse(skillsObject.getYearsOfUse());
-
-            repository.save(existingSkills);
+            result.set(repository.save(existingSkills));
+        }, () -> {
+            result.set(repository.save(skillsObject));
         }); 
 
-        return skillsFind.orElseGet(() -> repository.save(skillsObject));
+        return result.get();
     }
 
     public void deleteById(Long id){

@@ -3,6 +3,7 @@ package my.resume.Spring.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,16 @@ public class MissionStatementService {
     }
 
     public MissionStatement createOrUpdate (MissionStatement missionObject){
+        AtomicReference<MissionStatement> result = new AtomicReference<>();
         Optional<MissionStatement> missionFind = repository.findById(missionObject.getId());
-        missionFind.ifPresent(existingMission -> {
+        missionFind.ifPresentOrElse(existingMission -> {
             existingMission.setMyCareer(missionObject.getMyCareer());
-
-            repository.save(existingMission);
+            result.set(repository.save(existingMission));
+        }, () -> {
+            result.set(repository.save(missionObject));
         });
 
-        return missionFind.orElseGet(() -> repository.save(missionObject));
+        return result.get();
     }
     
     public void deleteById(Long id){

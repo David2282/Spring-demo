@@ -2,6 +2,7 @@ package my.resume.Spring.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,23 +24,22 @@ public class AddressLocationService {
       }
 
       public AddressLocation createOrUpdate(AddressLocation addressLocObject){
+        AtomicReference<AddressLocation> result = new AtomicReference<>();
         Optional<AddressLocation> addressLocFind = repository.findById(addressLocObject.getId());
-        //If the Find obj of the model is found in the repo, then populate the Obj of the model according to the model's properties using it's setters
-           addressLocFind.ifPresent(existingAddress -> {
+       
+           addressLocFind.ifPresentOrElse(existingAddress -> {
             existingAddress.setStreetNumber(addressLocObject.getStreetNumber());
             existingAddress.setStreetName(addressLocObject.getStreetName());
             existingAddress.setCity(addressLocObject.getCity());
             existingAddress.setState(addressLocObject.getState());
             existingAddress.setZipCode(addressLocObject.getZipCode());
-
-            //Save the updated entity
-            repository.save(existingAddress);
-
+            result.set(repository.save(existingAddress));
+           }, () -> {
+            
+            result.set(repository.save(addressLocObject));
             });
-
-            //If it's not found, save the new one
-            return addressLocFind.orElseGet(() -> repository.save(addressLocObject));
-
+            
+            return result.get();
             }
     
     public void deleteById(Long id){

@@ -2,6 +2,7 @@ package my.resume.Spring.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,9 @@ public class ContactInfoService {
     }
 
     public ContactInfo createOrUpdate(ContactInfo contactObject){
+        AtomicReference<ContactInfo> result = new AtomicReference<>();
         Optional<ContactInfo> contactFind = repository.findById(contactObject.getId());
-        contactFind.ifPresent(existingContact -> {
+        contactFind.ifPresentOrElse(existingContact -> {
             existingContact.setFirstName(contactObject.getFirstName());
             existingContact.setLastName(contactObject.getLastName());
             existingContact.setCellPhone(contactObject.getCellPhone());
@@ -31,11 +33,12 @@ public class ContactInfoService {
             existingContact.setGitHubRepo(contactObject.getGitHubRepo());
             existingContact.setWebSite(contactObject.getWebSite());
             existingContact.setContactInfoAddress(contactObject.getContactInfoAddress());
-
-            repository.save(existingContact);
+            result.set(repository.save(existingContact));
+        }, () -> {
+            result.set(repository.save(contactObject));
         });
 
-        return contactFind.orElseGet(() -> repository.save(contactObject));
+        return result.get();
     }
 
     public void deleteById(Long id){

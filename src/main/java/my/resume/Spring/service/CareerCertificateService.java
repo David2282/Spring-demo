@@ -2,6 +2,7 @@ package my.resume.Spring.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,15 +24,17 @@ public class CareerCertificateService {
     }
 
     public CareerCertificate createOrUpdate (CareerCertificate careerCertObject){
+        AtomicReference<CareerCertificate> result = new AtomicReference<>();
         Optional<CareerCertificate> careerCertFind = repository.findById(careerCertObject.getId());
-            careerCertFind.ifPresent(existingCareerCert -> {
+            careerCertFind.ifPresentOrElse(existingCareerCert -> {
                 existingCareerCert.setCertificate(careerCertObject.getCertificate());
                 existingCareerCert.setCompletionDate(careerCertObject.getCompletionDate());
+                result.set(repository.save(existingCareerCert));
+            }, () -> {
 
-                repository.save(existingCareerCert);
-
+                result.set(repository.save(careerCertObject));
             });
-            return careerCertFind.orElseGet(() -> repository.save(careerCertObject));
+            return result.get();
     }
 
     public void deleteById(Long id){

@@ -26,6 +26,10 @@ public class AddressLocationService {
       }
 
       public AddressLocation createOrUpdate(AddressLocation addressLocObject){
+        //Validate and format the address object before proceeding
+        AddressUtility.validateAndFormat(addressLocObject);
+
+
         AtomicReference<AddressLocation> result = new AtomicReference<>();
         Optional<AddressLocation> addressLocFind = repository.findById(addressLocObject.getId());
        
@@ -35,6 +39,7 @@ public class AddressLocationService {
             existingAddress.setCity(addressLocObject.getCity());
             existingAddress.setState(addressLocObject.getState());
             existingAddress.setZipCode(addressLocObject.getZipCode());
+            existingAddress.setFormattedAddress(addressLocObject.getFormattedAddress());
             result.set(repository.save(existingAddress));
            }, () -> {
             

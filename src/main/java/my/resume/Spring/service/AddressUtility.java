@@ -1,6 +1,7 @@
 package my.resume.Spring.service;
 
 import my.resume.Spring.model.AddressLocation;
+import my.resume.Spring.dto.AddressLocationDTO;
 import my.resume.Spring.exception.ValidationException;
 
 public class AddressUtility {
@@ -49,4 +50,25 @@ public class AddressUtility {
     
         return address;
     }
+
+    public static AddressLocation formatAddressForDTO(AddressLocation address) throws ValidationException {
+        // Reuse the validation and formatting logic
+        return validateAndFormat(address);
+    }
+    public static AddressLocationDTO toDTO(AddressLocation address) {
+        if (address == null) {
+            return null; // Prevent NullPointerException
+        }
+
+        AddressLocationDTO dto = new AddressLocationDTO();
+        dto.setStreetNumber(address.getStreetNumber());
+        dto.setStreetName(address.getStreetName());
+        dto.setCity(address.getCity());
+        dto.setState(address.getState());
+        dto.setZipCode(address.getZipCode());
+        dto.setFormattedAddress(address.getFormattedAddress());
+
+        return dto;
+    }
+
 }    

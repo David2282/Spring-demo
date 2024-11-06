@@ -18,7 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- Create and Update: new exception and controller classes with service class updates (2024-11-05 20:13:28 -0600)
+- Create and Update: dto and conversion classes with respective service updates (2024-11-06 16:26:47 -0600)
 ### Past Commits
-- Update: added exception handling for service classes (2024-11-05 18:07:16 -0600)
+- Create and Update: new exception and controller classes with service class updates (2024-11-05 20:13:28 -0600)
 

@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.model.Accomplishments;
 import my.resume.Spring.repository.AccomplishmentsRepository;
 
@@ -21,8 +22,9 @@ public class AccomplishmentsService {
         return repository.findAll();
     }
    
-    public Optional<Accomplishments> getById(Long id){
-        return repository.findById(id);
+    public Accomplishments getById(Long id){
+        return repository.findById(id)
+            .orElseThrow(() -> new ResourceNotfoundException("Accomplisment not found with id: " + id));
     }
 
     public Accomplishments createOrUpdate(Accomplishments accompObject){
@@ -44,6 +46,10 @@ public class AccomplishmentsService {
 }
 
     public void deleteById(Long id){
-        repository.deleteById(id);
+        // Explicitly check if the entity exists before deleting
+        Accomplishments accomplishments = repository.findById(id)
+            .orElseThrow(() -> new ResourceNotfoundException("Accomplishment not found with id: " + id));
+
+        repository.delete(accomplishments);
     }
 }

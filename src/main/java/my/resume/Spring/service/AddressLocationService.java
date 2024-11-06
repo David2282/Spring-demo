@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.model.AddressLocation;
 import my.resume.Spring.repository.AddressLocationRepository;
 
@@ -19,8 +20,9 @@ public class AddressLocationService {
             return repository.findAll();
         } 
    
-      public Optional<AddressLocation> getById(Long id){
-        return repository.findById(id);
+      public AddressLocation getById(Long id){
+        return repository.findById(id)
+          .orElseThrow(() -> new ResourceNotfoundException("Address Location not found with id: " + id));
       }
 
       public AddressLocation createOrUpdate(AddressLocation addressLocObject){
@@ -43,6 +45,10 @@ public class AddressLocationService {
             }
     
     public void deleteById(Long id){
-        repository.deleteById(id);
+      AddressLocation addressLocation = repository.findById(id)
+            .orElseThrow(() -> new ResourceNotfoundException("Address Location not found with id: " + id));
+
+        repository.delete(addressLocation);
+        
     }
 }

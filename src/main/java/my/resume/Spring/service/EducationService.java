@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.model.Education;
 import my.resume.Spring.repository.EducationRepository;
 
@@ -14,15 +15,17 @@ import my.resume.Spring.repository.EducationRepository;
 public class EducationService {
     @Autowired
     EducationRepository repository;
-    public List<Education> getAll(){
-        return repository.findAll();
-    } 
 
-    public Optional<Education> getById(Long id){
-        return repository.findById(id);
+    public List<Education> getAll() {
+        return repository.findAll();
     }
 
-    public Education createOrUpdate(Education educationObject){
+    public Education getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotfoundException("Education not found with id: " + id));
+    }
+
+    public Education createOrUpdate(Education educationObject) {
         AtomicReference<Education> result = new AtomicReference<>();
         Optional<Education> educationFind = repository.findById(educationObject.getId());
         educationFind.ifPresentOrElse(existingEducation -> {
@@ -38,7 +41,9 @@ public class EducationService {
         return result.get();
     }
 
-    public void deleteById(Long id){
-        repository.deleteById(id);
+    public void deleteById(Long id) {
+        Education education = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotfoundException("Education not found with id: " + id));
+        repository.deleteById(education.getId());
     }
 }

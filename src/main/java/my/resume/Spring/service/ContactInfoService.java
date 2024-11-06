@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.model.ContactInfo;
 import my.resume.Spring.repository.ContactInfoRepository;
 
@@ -14,15 +15,17 @@ import my.resume.Spring.repository.ContactInfoRepository;
 public class ContactInfoService {
     @Autowired
     ContactInfoRepository repository;
-    public List<ContactInfo> getAll(){
+
+    public List<ContactInfo> getAll() {
         return repository.findAll();
     }
 
-    public Optional<ContactInfo> getById(Long id){
-        return repository.findById(id);
+    public ContactInfo getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotfoundException("Contact Info not found with id: " + id));
     }
 
-    public ContactInfo createOrUpdate(ContactInfo contactObject){
+    public ContactInfo createOrUpdate(ContactInfo contactObject) {
         AtomicReference<ContactInfo> result = new AtomicReference<>();
         Optional<ContactInfo> contactFind = repository.findById(contactObject.getId());
         contactFind.ifPresentOrElse(existingContact -> {
@@ -41,7 +44,9 @@ public class ContactInfoService {
         return result.get();
     }
 
-    public void deleteById(Long id){
-        repository.deleteById(id);
+    public void deleteById(Long id) {
+        ContactInfo contactInfo = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotfoundException("Contact Info not found with id: " + id));
+        repository.deleteById(contactInfo.getId());
     }
 }

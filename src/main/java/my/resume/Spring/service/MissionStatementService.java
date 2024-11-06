@@ -1,6 +1,5 @@
 package my.resume.Spring.service;
 
-
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -8,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.model.MissionStatement;
 import my.resume.Spring.repository.MissionStatementRepository;
 
@@ -15,15 +15,17 @@ import my.resume.Spring.repository.MissionStatementRepository;
 public class MissionStatementService {
     @Autowired
     MissionStatementRepository repository;
-    public List<MissionStatement> getAll(){
+
+    public List<MissionStatement> getAll() {
         return repository.findAll();
     }
 
-    public Optional<MissionStatement> getById(Long id){
-        return repository.findById(id);
+    public MissionStatement getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotfoundException("Mission statement not found with id: " + id));
     }
 
-    public MissionStatement createOrUpdate (MissionStatement missionObject){
+    public MissionStatement createOrUpdate(MissionStatement missionObject) {
         AtomicReference<MissionStatement> result = new AtomicReference<>();
         Optional<MissionStatement> missionFind = repository.findById(missionObject.getId());
         missionFind.ifPresentOrElse(existingMission -> {
@@ -35,8 +37,10 @@ public class MissionStatementService {
 
         return result.get();
     }
-    
-    public void deleteById(Long id){
-        repository.deleteById(id);
+
+    public void deleteById(Long id) {
+        MissionStatement missionStatement = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotfoundException("Mission statement not found with id: " + id));
+        repository.deleteById(missionStatement.getId());
     }
 }

@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.model.WorkExperience;
 import my.resume.Spring.repository.WorkExperienceRepository;
 
@@ -17,14 +18,14 @@ public class WorkExperienceService {
 
     public List<WorkExperience> getAll() {
         return repository.findAll();
-        
     }
 
-    public Optional<WorkExperience> getById(Long id){
-        return repository.findById(id);
+    public WorkExperience getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotfoundException("Work experience not found with id: " + id));
     }
 
-    public WorkExperience createOrUpdate(WorkExperience workObject){
+    public WorkExperience createOrUpdate(WorkExperience workObject) {
         AtomicReference<WorkExperience> result = new AtomicReference<>();
         Optional<WorkExperience> workfind = repository.findById(workObject.getId());
         workfind.ifPresentOrElse(existingWork -> {
@@ -43,7 +44,9 @@ public class WorkExperienceService {
         return result.get();
     }
 
-    public void deleteById(Long id){
-        repository.deleteById(id);
+    public void deleteById(Long id) {
+        WorkExperience workExperience = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotfoundException("Work experience not found with id: " + id));
+        repository.deleteById(workExperience.getId());
     }
 }

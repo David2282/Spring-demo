@@ -18,7 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- Create and Refactor: new converter classes and validation package. Refactor utility for format only (2024-11-07 03:35:18 -0600)
+- Create Refactor and Update: new validation and utility packages. update globalexceptionhandler. refactor service for new validation and utility classes. (2024-11-07 15:50:16 -0600)
 ### Past Commits
-- Create and Update: dto and conversion classes with respective service updates (2024-11-06 16:26:47 -0600)
+- Create and Refactor: new converter classes and validation package. Refactor utility for format only (2024-11-07 03:35:18 -0600)
 

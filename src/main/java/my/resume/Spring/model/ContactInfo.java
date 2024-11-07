@@ -1,18 +1,19 @@
 package my.resume.Spring.model;
 
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import my.resume.Spring.service.WorkExperienceUtility;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class ContactInfo {
 
@@ -25,6 +26,6 @@ public class ContactInfo {
     private String email;
     private String gitHubRepo;
     private String webSite;
-    private List<WorkExperienceUtility> contactInfoAddress;
+    private AddressLocation contactInfoAddress;
 
 }

@@ -30,7 +30,7 @@ public class EducationService {
         Optional<Education> educationFind = repository.findById(educationObject.getId());
         educationFind.ifPresentOrElse(existingEducation -> {
             existingEducation.setName(educationObject.getName());
-            existingEducation.setCollegeAddress(educationObject.getCollegeAddress());
+            existingEducation.setEducationAddress(educationObject.getEducationAddress());
             existingEducation.setCollegeSemester(educationObject.getCollegeSemester());
             existingEducation.setDegree(educationObject.getDegree());
             result.set(repository.save(existingEducation));

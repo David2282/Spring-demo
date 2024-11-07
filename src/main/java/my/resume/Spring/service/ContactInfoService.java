@@ -3,11 +3,14 @@ package my.resume.Spring.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.model.ContactInfo;
 import my.resume.Spring.repository.ContactInfoRepository;
+import my.resume.Spring.validation.AddressUtilityValidator;
 
 @Service
 public class ContactInfoService {
@@ -24,7 +27,8 @@ public class ContactInfoService {
     }
 
     public ContactInfo createOrUpdate(ContactInfo contactObject) {
-        AddressUtility.validateAndFormat(contactObject.getContactInfoAddress());//an error here bc we are figuring out what to put here
+        AddressUtilityValidator.AddressUtilityValidate(contactObject.getContactInfoAddress());
+        AddressUtility.format(contactObject.getContactInfoAddress());
 
         AtomicReference<ContactInfo> result = new AtomicReference<>();
         Optional<ContactInfo> contactFind = repository.findById(contactObject.getId());

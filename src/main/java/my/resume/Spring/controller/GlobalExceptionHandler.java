@@ -5,9 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import my.resume.Spring.exception.ErrorResponse;
 import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.exception.ValidationException;
-import my.resume.Spring.exception.ErrorResponse;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -20,9 +21,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Object> handleValidationException(ValidationException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse("VALIDATION_ERROR", ex.getMessage()));
+    public ResponseEntity<ErrorResponse> handleValidationException(ValidationException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("VALIDATION_ERROR", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException ex) {
+        ErrorResponse errorResponse = new ErrorResponse("NULL_POINTER_ERROR", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     // Add more handlers as needed...

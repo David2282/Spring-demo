@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.model.AddressLocation;
 import my.resume.Spring.repository.AddressLocationRepository;
+import my.resume.Spring.validation.AddressUtilityValidator;
 
 @Service
 public class AddressLocationService {
@@ -27,7 +28,8 @@ public class AddressLocationService {
 
       public AddressLocation createOrUpdate(AddressLocation addressLocObject){
         //Validate and format the address object before proceeding
-        AddressUtility.validateAndFormat(addressLocObject);
+        AddressUtilityValidator.AddressUtilityValidate(addressLocObject);
+        AddressUtility.format(addressLocObject);
 
 
         AtomicReference<AddressLocation> result = new AtomicReference<>();

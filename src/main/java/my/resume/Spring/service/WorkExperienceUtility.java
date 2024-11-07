@@ -1,17 +1,17 @@
 package my.resume.Spring.service;
-
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import my.resume.Spring.exception.NullPointerException;
 import my.resume.Spring.model.WorkExperience;
 
 public class WorkExperienceUtility {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM yyyy");
     
     public static String formatDate(LocalDate date){
+        NullPointerException.nullCheck(date, "Date cannot be null for formatting");
         return date.format(DATE_FORMATTER);
     }
     
@@ -21,7 +21,12 @@ public class WorkExperienceUtility {
                 %s 
                 $s 
                 %s - %s
-                """, experience.getEmployer(), experience.getRole(), experience.getStartDate(), experience.getEndDate());
+                """, 
+                experience.getEmployer(), 
+                experience.getRole(), 
+                formatDate(experience.getStartDate()), 
+                formatDate(experience.getEndDate())
+                );
        
     }
 
@@ -33,19 +38,10 @@ public class WorkExperienceUtility {
 
         return String.format("""
             <div>
-                <p style="font -size: 1.2em;"> %s</p>
-                <p> <br>%s <p>
-                <p><strong>    - %s<p>
-            <div>
-                """, workExperienceType, formattedData, workExperienceHighlight);
+                <p style="font-size: 1.2em;">%s</p>
+                <p><br>%s</p>
+                <p><strong>- %s</strong><p>
+            </div>
+            """, workExperienceType, formattedData, workExperienceHighlight);
     }
-   
-    
-    
-
-    
-    
-
-     
-    
 }

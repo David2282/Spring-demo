@@ -1,34 +1,27 @@
 package my.resume.Spring.validation;
 
-import my.resume.Spring.exception.ValidationException;
 import my.resume.Spring.model.AddressLocation;
+import my.resume.Spring.utility.validationutilities.ValidationIntUtility;
+import my.resume.Spring.utility.validationutilities.ValidationSpecialCaseUtility;
+import my.resume.Spring.utility.validationutilities.ValidationStringUtility;
 
 public class AddressUtilityValidator {
     public static void AddressUtilityValidate (AddressLocation address) {
-
-        // Validation for street number
-        if (address.getStreetNumber() == 0) {
-            throw new ValidationException("Street number cannot be zero or empty");
-        }
-    
-        // Validation for street name
-        if (address.getStreetName() == null || address.getStreetName().isEmpty()) {
-            throw new ValidationException("Street name cannot be null or empty");
-        }
-    
-        // Validation for city
-        if (address.getCity() == null || address.getCity().isEmpty()) {
-            throw new ValidationException("City cannot be null or empty");
-        }
-    
-        // Validation for state
-        if (address.getState() == null || address.getState().isEmpty()) {
-            throw new ValidationException("State cannot be null or empty");
-        }
-    
-        // Validation for zip code
-        if (address.getZipCode() == 0) {
-            throw new ValidationException("Zip code cannot be zero or empty");
-        }
+        ValidationIntUtility.validateIntNotZero(address.getStreetNumber());
+        ValidationIntUtility.validateIntNotNegative(address.getStreetNumber());
+        ValidationIntUtility.validateIntNotNull(address.getStreetNumber());
+        ValidationSpecialCaseUtility.validateStreetDetails(address.getStreetName(), address.getStreetNumber());
+        ValidationSpecialCaseUtility.validateStreetNumberWhenNameIsPresent(address.getStreetName(), address.getStreetNumber());
+        ValidationSpecialCaseUtility.validateStreetNameWhenNumberIsPresent(address.getStreetName(), address.getStreetNumber());
+        ValidationStringUtility.validateStringNotNull(address.getStreetName());
+        ValidationStringUtility.validateStringNotEmpty(address.getStreetName());
+        ValidationStringUtility.validateStringNotNull(address.getCity());
+        ValidationStringUtility.validateStringNotEmpty(address.getCity());
+        ValidationStringUtility.validateStringNotNull(address.getState());
+        ValidationStringUtility.validateStringNotEmpty(address.getState());
+        ValidationIntUtility.validateIntNotZero(address.getZipCode());
+        ValidationIntUtility.validateIntNotNegative(address.getZipCode());
+        ValidationIntUtility.validateIntNotNull(address.getZipCode());
+        
     }
 }

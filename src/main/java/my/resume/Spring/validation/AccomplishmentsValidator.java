@@ -8,5 +8,4 @@ public class AccomplishmentsValidator {
         ValidationArrayUtility.validateArrayNotNull(accomplishments.getOverallAccomplishments());
         ValidationArrayUtility.validateArrayNotEmpty(accomplishments.getOverallAccomplishments());
     }
-
 }

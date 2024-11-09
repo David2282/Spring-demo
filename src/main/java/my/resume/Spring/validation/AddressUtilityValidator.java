@@ -21,7 +21,6 @@ public class AddressUtilityValidator {
         ValidationStringUtility.validateStringNotEmpty(address.getState());
         ValidationIntUtility.validateIntNotZero(address.getZipCode());
         ValidationIntUtility.validateIntNotNegative(address.getZipCode());
-        ValidationIntUtility.validateIntNotNull(address.getZipCode());
-        
+        ValidationIntUtility.validateIntNotNull(address.getZipCode());  
     }
 }

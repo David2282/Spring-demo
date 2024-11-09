@@ -2,7 +2,7 @@
 A Spring Boot application to manage resume data, including work experience, education, and contact information.
 
 ## Technologies Used
-- Java (version 23)
+- Java (version 21)
 - Spring Boot
 - Lombok
 - Maven
@@ -18,7 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- Create, Update and Refactor: new validationutils, messages packages with new validator classes. updates to current util class and refactor of validators. (2024-11-08 05:14:55 -0600)
+- Update update-readme.yml (2024-11-09 15:01:02 -0600)
 ### Past Commits
-- Create Refactor and Update: new validation and utility packages. update globalexceptionhandler. refactor service for new validation and utility classes. (2024-11-07 15:50:16 -0600)
+- Create, Update and Refactor: new validationutils, messages packages with new validator classes. updates to current util class and refactor of validators. (2024-11-08 05:14:55 -0600)
 

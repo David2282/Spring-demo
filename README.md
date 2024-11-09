@@ -18,7 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- Update update-readme.yml (2024-11-09 15:01:02 -0600)
+- Create and Refactor: new validators and refactor for new validation messages (2024-11-09 15:03:57 -0600)
 ### Past Commits
-- Create, Update and Refactor: new validationutils, messages packages with new validator classes. updates to current util class and refactor of validators. (2024-11-08 05:14:55 -0600)
+- Update update-readme.yml (2024-11-09 15:01:02 -0600)
 

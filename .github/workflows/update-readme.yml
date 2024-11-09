@@ -39,7 +39,7 @@ jobs:
           echo "" >> new_readme.txt
 
           echo "## Technologies Used" >> new_readme.txt
-          echo "- Java (version 23)" >> new_readme.txt
+          echo "- Java (version 21)" >> new_readme.txt
           echo "- Spring Boot" >> new_readme.txt
           echo "- Lombok" >> new_readme.txt
           echo "- Maven" >> new_readme.txt

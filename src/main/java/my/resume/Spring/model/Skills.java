@@ -17,8 +17,8 @@ import lombok.Setter;
 public class Skills {
     @Id
     @GeneratedValue 
-    
     private Long id;
+    
     private int yearsOfUse;
     private String skillName;
 

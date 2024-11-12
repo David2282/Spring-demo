@@ -13,6 +13,7 @@ public class Accomplishments {
     @Id
     @GeneratedValue
     private Long id;
+    
     private String[] overallAccomplishments;
 
 }

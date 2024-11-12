@@ -20,6 +20,7 @@ public class ContactInfo {
     @Id
     @GeneratedValue 
     private Long id;
+    
     private String firstName;
     private String lastName;
     private String cellPhone;

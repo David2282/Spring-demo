@@ -18,6 +18,7 @@ public class CareerCertificate {
     @Id
     @GeneratedValue 
     private Long id;
+    
     private LocalDate completionDate;
     private String certificate;
 }

@@ -21,6 +21,7 @@ Entity tells java, "this is a database table. It's attributes are the columns"*/
     @Id
     @GeneratedValue 
     private Long id;
+    
     private String employer;
     private LocalDate startDate;
     private LocalDate endDate;

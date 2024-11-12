@@ -20,8 +20,8 @@ import lombok.Setter;
 public class AddressLocation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-
     private Long id;
+    
     private int streetNumber;
     private String streetName;
     private String city;

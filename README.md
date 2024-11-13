@@ -18,7 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- Create and Refactor: new validators and refactor for new validation messages (2024-11-09 15:03:57 -0600)
+- Update: educationValidator class. (2024-11-12 10:49:12 -0600)
 ### Past Commits
-- Update update-readme.yml (2024-11-09 15:01:02 -0600)
+- Create and Refactor: new validators and refactor for new validation messages (2024-11-09 15:03:57 -0600)
 

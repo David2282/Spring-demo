@@ -7,6 +7,6 @@ import my.resume.Spring.model.ContactInfo;
 
 @RestController
 @RequestMapping("/api/contact-info")
-public class ContactInfoController extends BaseCrudController<ContactInfo, Long> {
+public class ContactInfoController extends BaseCrudController<ContactInfo> {
 
 }

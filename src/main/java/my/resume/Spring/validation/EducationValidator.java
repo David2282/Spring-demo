@@ -10,6 +10,7 @@ public class EducationValidator {
         ValidationStringUtility.validateStringNotEmpty(education.getDegree());
         ValidationArrayUtility.validateArrayNotEmpty(education.getCollegeSemester());
         ValidationStringUtility.validateStringNotNull(education.getName());
-
+        ValidationStringUtility.validateStringNotNull(education.getDegree());
+        ValidationArrayUtility.validateArrayNotNull(education.getCollegeSemester());
     }
 }

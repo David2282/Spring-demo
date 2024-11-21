@@ -7,6 +7,6 @@ import my.resume.Spring.model.WorkExperience;
 
 @RestController
 @RequestMapping("/api/work-experience")
-public class WorkExperienceController extends BaseCrudController<WorkExperience, Long> {
+public class WorkExperienceController extends BaseCrudController<WorkExperience> {
 
 }

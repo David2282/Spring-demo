@@ -7,7 +7,7 @@ import my.resume.Spring.model.Accomplishments;
 
 @RestController
 @RequestMapping("/api/accomplishments")
-public class AccomplishmentsController extends BaseCrudController<Accomplishments, Long> {
+public class AccomplishmentsController extends BaseCrudController<Accomplishments> {
 
     
 }

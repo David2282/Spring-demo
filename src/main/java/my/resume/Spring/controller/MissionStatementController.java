@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import my.resume.Spring.model.MissionStatement;
 
 @RestController
-@RequestMapping("/api/misison-statement")
-public class MissionStatementController extends BaseCrudController<MissionStatement, Long> {
+@RequestMapping("/api/mission-statement")
+public class MissionStatementController extends BaseCrudController<MissionStatement> {
 
 }

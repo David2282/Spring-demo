@@ -7,6 +7,6 @@ import my.resume.Spring.model.CareerCertificate;
 
 @RestController
 @RequestMapping("/api/career-certificate")
-public class CareerCertificateController extends BaseCrudController<CareerCertificate, Long> {
+public class CareerCertificateController extends BaseCrudController<CareerCertificate> {
 
 }

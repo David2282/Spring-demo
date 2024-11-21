@@ -7,6 +7,6 @@ import my.resume.Spring.model.Skills;
 
 @RestController
 @RequestMapping("/api/skills")
-public class SkillsController extends BaseCrudController<Skills, Long> {
+public class SkillsController extends BaseCrudController<Skills> {
 
 }

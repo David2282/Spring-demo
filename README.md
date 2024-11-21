@@ -18,7 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- getting local and origin inline (2024-11-12 20:57:09 -0600)
+- Update: new code blocks for certain validators (2024-11-21 01:35:28 -0600)
 ### Past Commits
-- Update: educationValidator class. (2024-11-12 10:49:12 -0600)
+- getting local and origin inline (2024-11-12 20:57:09 -0600)
 

@@ -8,7 +8,7 @@ public class SkillsValidator {
     public static void validate(Skills skills){
         ValidationIntUtility.validateIntNotNegative(skills.getYearsOfUse());
         ValidationIntUtility.validateIntNotNull(skills.getYearsOfUse());
-        ValidationStringUtility.validateStringNotEmpty(skills.getSkillName());
         ValidationStringUtility.validateStringNotNull(skills.getSkillName());
+        ValidationStringUtility.validateStringNotEmpty(skills.getSkillName());
     }
 }

@@ -18,7 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- Refactor: removed redundant validation layer and simplified architecture (2025-10-25 04:07:02 -0500)
+- Education service working; Lombok validated; converter next (2025-10-25 16:50:49 -0500)
 ### Past Commits
-- Update: removed workexputilvalidator and updated other validators (2024-11-21 15:32:49 -0600)
+- Refactor: removed redundant validation layer and simplified architecture (2025-10-25 04:07:02 -0500)
 

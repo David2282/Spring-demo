@@ -1,66 +1,44 @@
 package my.resume.Spring.converter;
 
-import my.resume.Spring.dto.EducationDTO;
-import my.resume.Spring.exception.ValidationException;
-import my.resume.Spring.model.Education;
-import my.resume.Spring.service.AddressUtility;
+import org.springframework.stereotype.Component;
 
+import my.resume.Spring.dto.EducationDTO;
+import my.resume.Spring.model.Education;
+import my.resume.Spring.model.Address;
+
+@Component
 public class EducationConverter {
     public static Education dtoToEntity(EducationDTO dto){
-        if(dto == null){
-            return null;
-        }
+        if (dto == null) return null;
 
-        Education eduObject = new Education();
-        eduObject.setName(dto.getName());
-        eduObject.setCollegeSemester(dto.getCollegeSemester());
-        eduObject.setDegree(dto.getDegree());
-
-        if (dto.getEducationAddress() != null) {
-            eduObject.setEducationAddress(AddressLocationConverter.dtoToEntity(dto.getEducationAddress()));
-         try {
-            // Validate and format the entity before proceeding
-            AddressUtility.validateAndFormat(eduObject.getEducationAddress());
-         } catch (ValidationException e) {
-            throw new RuntimeException("Address validation failed: " + e.getMessage());
-         }
-        }
-        return eduObject;
+        Education e = new Education();
+        e.setId(dto.getId());
+        e.setName(dto.getName());
+        e.setSemester(dto.getSemester());
+        e.setDegree(dto.getDegree());
+        
+        Address addr = dto.getAddress();
+        e.setAddress(addr);
+       
+        
+        return e;
     }
     
     public static EducationDTO toDTO(Education entity) {
-        if (entity == null) {
-            return null;
-        }
+        if (entity == null) return null;
+        
     
         EducationDTO dto = new EducationDTO();
+        dto.setId(entity.getId());
         dto.setName(entity.getName());
-        dto.setCollegeSemester(entity.getCollegeSemester());
+        dto.setSemester(entity.getSemester());
         dto.setDegree(entity.getDegree());
+        dto.setAddress(entity.getAddress());
         
-        // Convert address from Entity to DTO
-        if (entity.getEducationAddress() != null) {
-            dto.setEducationAddress(AddressLocationConverter.toDTO(entity.getEducationAddress()));
-        }
+       
     
         return dto;
     }
     
-    public static Education toEntity(EducationDTO dto) {
-        if (dto == null) {
-            return null;
-        }
     
-        Education entity = new Education();
-        entity.setName(dto.getName());
-        entity.setCollegeSemester(dto.getCollegeSemester());
-        entity.setDegree(dto.getDegree());
-        
-        // Convert address from DTO to Entity
-        if (dto.getEducationAddress() != null) {
-            entity.setEducationAddress(AddressLocationConverter.dtoToEntity(dto.getEducationAddress()));
-        }
-    
-        return entity;
-    }
 }

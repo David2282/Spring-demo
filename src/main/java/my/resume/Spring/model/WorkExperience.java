@@ -3,6 +3,7 @@ package my.resume.Spring.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -29,5 +30,8 @@ Entity tells java, "this is a database table. It's attributes are the columns"*/
     private String workExperienceType;
     private List<String> workExperienceData;
     private String workExperienceHighlight;
+
+    @Embedded
+    private Address address;
     
 }

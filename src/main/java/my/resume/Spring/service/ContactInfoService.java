@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import my.resume.Spring.exception.ResourceNotfoundException;
 import my.resume.Spring.model.ContactInfo;
 import my.resume.Spring.repository.ContactInfoRepository;
-import my.resume.Spring.validation.AddressUtilityValidator;
 
 @Service
 public class ContactInfoService {
@@ -27,8 +26,7 @@ public class ContactInfoService {
     }
 
     public ContactInfo createOrUpdate(ContactInfo contactObject) {
-        AddressUtilityValidator.AddressUtilityValidate(contactObject.getContactInfoAddress());
-        AddressUtility.format(contactObject.getContactInfoAddress());
+        
 
         AtomicReference<ContactInfo> result = new AtomicReference<>();
         Optional<ContactInfo> contactFind = repository.findById(contactObject.getId());

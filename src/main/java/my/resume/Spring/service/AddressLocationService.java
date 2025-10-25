@@ -28,7 +28,7 @@ public class AddressLocationService {
 
       public AddressLocation createOrUpdate(AddressLocation addressLocObject){
         //Validate and format the address object before proceeding
-        AddressUtilityValidator.AddressUtilityValidate(addressLocObject);
+        AddressUtilityValidator.AddressUtilityValidator(addressLocObject);
         AddressUtility.format(addressLocObject);
 
 

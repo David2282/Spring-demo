@@ -22,10 +22,10 @@ public class AddressLocation {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     
-    private int streetNumber;
+    private String streetNumber;
     private String streetName;
     private String city;
     private String state;
-    private int zipCode;
-    private String formattedAddress;
+    private String zipCode;
+    
 }

@@ -18,7 +18,7 @@ mvn spring-boot:run
 
 ## Changelog
 ### Latest Changes
-- Education service working; Lombok validated; converter next (2025-10-25 16:50:49 -0500)
+- Merge branch 'main' of https://github.com/David2282/Spring-demo (2025-11-04 19:17:37 -0600)
 ### Past Commits
-- Refactor: removed redundant validation layer and simplified architecture (2025-10-25 04:07:02 -0500)
+- Education service working; Lombok validated; converter next (2025-10-25 16:50:49 -0500)
 

@@ -21,4 +21,5 @@ public class WorkExperienceDTO {
     private String workExperienceType;
     private List<String> workExperienceData;
     private String workExperienceHighlight;
+    private AddressDTO address;
 }

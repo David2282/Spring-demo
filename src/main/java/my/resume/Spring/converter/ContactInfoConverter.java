@@ -6,25 +6,29 @@ import my.resume.Spring.model.ContactInfo;
 
 
 public class ContactInfoConverter {
-    public static ContactInfo dtoToEntity(ContactInfoDTO dto){
-       
 
-        ContactInfo contactInfoObject = new ContactInfo();
-        contactInfoObject.setFirstName(dto.getFirstName());
-        contactInfoObject.setLastName(dto.getLastName());
-        contactInfoObject.setCellPhone(dto.getCellPhone());
-        contactInfoObject.setEmail(dto.getEmail());
-        contactInfoObject.setGitHubRepo(dto.getGitHubRepo());
-        contactInfoObject.setWebSite(dto.getWebSite());
-        contactInfoObject.setAddress(dto.getAddress());
+    public static ContactInfo dtoToEntity(ContactInfoDTO dto){
+        if (dto == null) return null;
+
+        ContactInfo out = new ContactInfo();
+        out.setFirstName(dto.getFirstName());
+        out.setLastName(dto.getLastName());
+        out.setCellPhone(dto.getCellPhone());
+        out.setEmail(dto.getEmail());
+        out.setGitHubRepo(dto.getGitHubRepo());
+        out.setWebSite(dto.getWebSite());
+        
+        // Convert AddressDTO -> Address
+        out.setAddress(AddressConverter.dtoToEntity(dto.getAddress()));
 
         
-        return contactInfoObject;
+        return out;
     }
 
 
 public static ContactInfoDTO toDTO(ContactInfo entity){
-   
+    if (entity == null) return null;
+
     ContactInfoDTO dto = new ContactInfoDTO();
     dto.setFirstName(entity.getFirstName());
     dto.setLastName(entity.getLastName());
@@ -32,11 +36,9 @@ public static ContactInfoDTO toDTO(ContactInfo entity){
     dto.setEmail(entity.getEmail());
     dto.setGitHubRepo(entity.getGitHubRepo());
     dto.setWebSite(entity.getWebSite());
-    dto.setAddress(entity.getAddress());
+    dto.setAddress(AddressConverter.toDTO(entity.getAddress()));
     
-
     return dto;
-
-}
+    }
 
 }

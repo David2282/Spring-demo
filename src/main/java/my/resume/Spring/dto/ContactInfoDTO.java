@@ -1,13 +1,10 @@
 package my.resume.Spring.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContactInfoDTO {
@@ -17,5 +14,5 @@ public class ContactInfoDTO {
     private String email;
     private String gitHubRepo;
     private String webSite;
-    private AddressLocationDTO contactInfoAddress;
+    private AddressDTO address;
 }
